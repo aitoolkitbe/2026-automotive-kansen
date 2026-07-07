@@ -33,6 +33,15 @@ const RADIUS=16;
 const CARD={background:T.panel,border:`1px solid ${T.hair}`,borderRadius:RADIUS,
   boxShadow:"0 1px 2px rgba(13,8,2,.04)"};
 
+
+// kies leesbare tekstkleur (wit of inkt) op basis van achtergrondhelderheid
+function textOn(hex){
+  const c=hex.replace("#","");
+  const r=parseInt(c.slice(0,2),16),g=parseInt(c.slice(2,4),16),b=parseInt(c.slice(4,6),16);
+  const lum=(0.299*r+0.587*g+0.114*b)/255;
+  return lum<0.62 ? "#FFFFFF" : T.text;
+}
+
 const MONTHS_NL=["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec"];
 const mlabel=(m)=>{const[y,mo]=m.split("-");return `${MONTHS_NL[+mo-1]} '${y.slice(2)}`;};
 const fmt=(n)=> (n==null?"–":n.toLocaleString("nl-BE"));
@@ -132,7 +141,7 @@ function Chip({active,onClick,children,color}){
       padding:"7px 12px", borderRadius:999, cursor:"pointer",
       border:`1px solid ${active?(color||T.text):T.hair}`,
       background: active?(color||T.accent):"transparent",
-      color: active?T.onAccent:T.muted,
+      color: active?(color?textOn(color):T.onAccent):T.muted,
     }}>{children}</button>
   );
 }
@@ -375,7 +384,7 @@ function Verkenner(){
             <button key={d.b} className="brandtog" onClick={()=>toggle(d.b)} style={{
               font:"11px 'IBM Plex Mono'",padding:"5px 9px",borderRadius:7,cursor:"pointer",
               border:`1px solid ${on?colorOf(d.b):T.hair}`,
-              background:on?colorOf(d.b):"transparent", color:on?T.onAccent:T.muted,fontWeight:on?700:400}}>
+              background:on?colorOf(d.b):"transparent", color:on?textOn(colorOf(d.b)):T.muted,fontWeight:on?700:400}}>
               {d.b}
             </button>);
         })}
@@ -539,7 +548,7 @@ function Merkdossiers(){
             <div>
               <h3 style={{font:`700 26px 'Space Grotesk'`,margin:"0 0 8px",color:T.text}}>{sel}</h3>
               <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-                <span style={{font:"10px 'IBM Plex Mono'",color:T.onAccent,background:GROUP[d.g].c,
+                <span style={{font:"10px 'IBM Plex Mono'",color:textOn(GROUP[d.g].c),background:GROUP[d.g].c,
                   padding:"3px 8px",borderRadius:5}}>{GROUP[d.g].label}</span>
                 {ins.imp && <span style={{font:"10px 'IBM Plex Mono'",color:T.muted,
                   border:`1px solid ${T.hair}`,padding:"3px 8px",borderRadius:5}}>importeur · {ins.imp}</span>}

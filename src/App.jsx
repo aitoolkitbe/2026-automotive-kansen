@@ -601,7 +601,7 @@ function Kpi({label,value,sub,color,hero}){
 export default function App(){
   const [tab,setTab]=useState(0);
   const mk=DATA.market;
-  const mktYoY=(mk.h26-mk.h25)/mk.h25*100;
+  const mktYoY=(mk.h1_26-mk.h1_25)/mk.h1_25*100;
   const riser=[...DATA.brands].filter(d=>d.h26>=300).sort((a,b)=>b.ya-a.ya)[0];
   const faller=[...DATA.brands].filter(d=>d.h25>=300).sort((a,b)=>a.ya-b.ya)[0];
   const TABS=["Kansenmatrix","Momentum-ranglijst","Merk-verkenner","Verdedigers","Merkdossiers"];
@@ -637,7 +637,7 @@ export default function App(){
 
         {/* KPIs */}
         <div style={{display:"flex",flexWrap:"wrap",gap:12,marginBottom:28}}>
-          <Kpi hero label="MARKT H1-2026" value={fmt(mk.h26)} color={T.text}
+          <Kpi hero label="MARKT H1-2026" value={fmt(mk.h1_26)} color={T.text}
             sub={`${mktYoY>0?"+":""}${mktYoY.toFixed(1)}% vs H1-2025`}/>
           <Kpi label="GROOTSTE STIJGER" value={riser.b} color={T.pos}
             sub={`+${fmt(riser.ya)} · ${pct(riser.yp)} YoY H1`}/>
